@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<robot name="diff_vehicle_sim" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:arg name="laser_visual" default="true" />
+    <xacro:arg name="imu_visual" default="false" />
+
+    <gazebo reference="base_link">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>
+
+    <!-- STEER DRIVE WHEEL -->
+    <gazebo reference="sd_wheel_steer_joint">
+        <mu1>0.1</mu1>
+        <mu2>0.1</mu2>
+        <kp>500000.0</kp>
+        <kd>10.0</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>0.1</maxVel>
+        <fdir1>1 0 0</fdir1>
+        <material>Gazebo/FlatBlack</material>
+    </gazebo>
+
+    <gazebo reference="sd_wheel_drive_joint">
+        <mu1>0.1</mu1>
+        <mu2>0.1</mu2>
+        <kp>1000000.0</kp>
+        <kd>100.0</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>1.0</maxVel>
+        <material>Gazebo/FlatBlack</material>
+    </gazebo>
+
+    <!-- FREE WHEELS -->
+    <gazebo reference="left_wheel_drive_joint">
+        <mu1>0.1</mu1>
+        <mu2>0.1</mu2>
+        <kp>1000000.0</kp>
+        <kd>100.0</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>1.0</maxVel>
+        <material>Gazebo/FlatBlack</material>
+    </gazebo>
+
+    <gazebo reference="left_wheel_drive_joint">
+        <mu1>0.1</mu1>
+        <mu2>0.1</mu2>
+        <kp>1000000.0</kp>
+        <kd>100.0</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>1.0</maxVel>
+        <material>Gazebo/FlatBlack</material>
+    </gazebo>
+    
+    <gazebo>
+        <plugin name="sd_vehicle_controller" filename="libgazebo_ros_tricycle_drive.so">
+            <actuatedWheelDiameter>${wheel_diameter}</actuatedWheelDiameter>
+            <encoderWheelDiameter>${wheel_diameter}</encoderWheelDiameter>
+            <wheelTorque>10</wheelTorque>
+
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <robotBaseFrame>base_footprint</robotBaseFrame>
+
+            <updateRate>50</updateRate>
+
+            <wheelAcceleration>1</wheelAcceleration>
+            <wheelDeceleration>1</wheelDeceleration>
+            <wheelSpeedTolerance>0.01</wheelSpeedTolerance>
+            <steeringSpeed>0</steeringSpeed>
+            <steeringAngleTolerance>0.01</steeringAngleTolerance>
+            <encoderWheelSeparation>${fixed_wheel_0_origin_y - fixed_wheel_1_origin_y}</encoderWheelSeparation>
+
+            <publishWheelTF>false</publishWheelTF>
+            <publishWheelJointState>true</publishWheelJointState>
+
+            <steeringJoint>sd_wheel_steer_joint</steeringJoint>
+            <actuatedWheelJoint>sd_wheel_drive_joint</actuatedWheelJoint>
+            <encoderWheelLeftJoint>left_wheel_drive_joint</encoderWheelLeftJoint>
+            <encoderWheelRightJoint>right_wheel_drive_joint</encoderWheelRightJoint>
+        </plugin>
+    </gazebo>
+</robot>

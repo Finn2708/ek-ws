@@ -1,0 +1,20 @@
+<launch>
+    <!-- ROBOT DESCRIPTION -->
+    <param name="robot_description" command="xacro $(find sd_description)/urdf/main.urdf.xacro" />        
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" />
+    
+    <!-- GAZEBO -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find sd_bringup)/world/empty_world.world"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="recording" value="false"/>
+        <arg name="debug" value="false"/>
+        <arg name="extra_gazebo_args" value="--verbose" />
+    </include>
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-param robot_description -urdf -model sd_vehicle -x 1 -y 1 -z 2" />
+
+    <!-- RVIZ -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find sd_bringup)/rviz/default.rviz" />
+</launch>

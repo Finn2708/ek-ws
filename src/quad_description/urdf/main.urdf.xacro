@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sd_vehicle">
+
+    <!-- COMMON INCLUDES -->
+    <xacro:include filename="$(find common_description)/urdf/colors.xacro" />
+    <xacro:include filename="$(find common_description)/urdf/constants.xacro" />
+    <xacro:include filename="$(find common_description)/urdf/steer_driven_wheel.urdf.xacro" />
+    <xacro:include filename="$(find common_description)/urdf/free_wheel.urdf.xacro" />
+    <xacro:include filename="$(find common_description)/urdf/sensors/sick_nanoscan3.urdf.xacro" />
+    
+    <!-- QUAD VEHICLE INCLUDES -->
+    <xacro:include filename="$(find quad_description)/urdf/base.urdf.xacro" />
+
+    <!-- VEHICLE DIMENSIONS -->
+    <xacro:property name="vehicle_length" value="1.0" />
+    <xacro:property name="vehicle_width" value="0.6" />
+    <xacro:property name="vehicle_height" value="0.2" />
+    <xacro:property name="ground_clearance" value="0.025" />
+
+    <!-- WHEEL SETUP -->
+    <xacro:property name="wheel_diameter" value="0.13" />
+    <xacro:property name="wheel_width" value="0.05" />
+
+    <xacro:property name="wheel_0_origin_x" value="${0.3 * vehicle_length}" />
+    <xacro:property name="wheel_0_origin_y" value="${-0.3 * vehicle_width}" />
+    <xacro:property name="wheel_0_origin_z" value="${-(ground_clearance + vehicle_height / 2 - wheel_diameter / 2)}" />
+
+    <xacro:property name="wheel_1_origin_x" value="${-wheel_0_origin_x}" />
+    <xacro:property name="wheel_1_origin_y" value="${-wheel_0_origin_y}" />
+    <xacro:property name="wheel_1_origin_z" value="${wheel_0_origin_z}" />
+
+    <xacro:property name="roller_0_origin_x" value="${wheel_0_origin_x}" />
+    <xacro:property name="roller_0_origin_y" value="${-wheel_0_origin_y}" />
+    <xacro:property name="roller_0_origin_z" value="${wheel_0_origin_z}" />
+
+    <xacro:property name="roller_1_origin_x" value="${wheel_1_origin_x}" />
+    <xacro:property name="roller_1_origin_y" value="${-wheel_1_origin_y}" />
+    <xacro:property name="roller_1_origin_z" value="${wheel_0_origin_z}" />
+
+    <!-- LASER SCANNER SETUP -->
+    <xacro:property name="front_scanner_origin_x" value="${vehicle_length / 2 - 0.075}" />
+    <xacro:property name="front_scanner_origin_y" value="${vehicle_width / 2 - 0.075}" />
+    <xacro:property name="front_scanner_origin_z" value="0.0" />
+
+    <xacro:property name="rear_scanner_origin_x" value="${-(vehicle_length / 2 - 0.075)}" />
+    <xacro:property name="rear_scanner_origin_y" value="${-(vehicle_width / 2 - 0.075)}" />
+    <xacro:property name="rear_scanner_origin_z" value="0.0" />
+
+    <!-- LINKS -->
+    <xacro:property name="base_footprint" value="base_footprint" />
+    <xacro:property name="base_link" value="base_link" />
+
+    <!-- TOPICS -->
+    <xacro:property name="front_laser_topic" value="front_scan" />
+    <xacro:property name="rear_laser_topic" value="rear_scan" />
+
+    <!-- BASE -->
+    <xacro:base_setup />
+
+    <!-- DRIVEN WHEELS -->
+    <xacro:sd_wheel name="front_wheel" parent="${base_link}">
+        <origin xyz="${wheel_0_origin_x} ${wheel_0_origin_y} ${wheel_0_origin_z}" rpy="0.0 0.0 0.0" />
+    </xacro:sd_wheel>
+
+    <xacro:sd_wheel name="rear_wheel" parent="${base_link}">
+        <origin xyz="${wheel_1_origin_x} ${wheel_1_origin_y} ${wheel_1_origin_z}" rpy="0.0 0.0 0.0" />
+    </xacro:sd_wheel>
+
+    <!-- FREE WHEELS -->
+    <xacro:free_wheel name="front_roller" parent="${base_link}">
+        <origin xyz="${roller_0_origin_x} ${roller_0_origin_y} ${roller_0_origin_z}" rpy="0.0 0.0 0.0" />
+    </xacro:free_wheel>
+
+    <xacro:free_wheel name="rear_roller" parent="${base_link}">
+        <origin xyz="${roller_1_origin_x} ${roller_1_origin_y} ${roller_1_origin_z}" rpy="0.0 0.0 0.0" />
+    </xacro:free_wheel>
+
+    <!-- SENSORS -->
+    <xacro:sick_nanoscan3 name="front_scanner" parent="${base_link}" ros_topic="${front_laser_topic}">
+        <origin xyz="${front_scanner_origin_x} ${front_scanner_origin_y} ${front_scanner_origin_z}" rpy="0.0 0.0 0.0" />
+    </xacro:sick_nanoscan3>
+
+    <xacro:sick_nanoscan3 name="rear_scanner" parent="${base_link}" ros_topic="${rear_laser_topic}">
+        <origin xyz="${rear_scanner_origin_x} ${rear_scanner_origin_y} ${rear_scanner_origin_z}" rpy="0.0 0.0 ${M_PI}" />
+    </xacro:sick_nanoscan3>
+
+
+</robot>
+

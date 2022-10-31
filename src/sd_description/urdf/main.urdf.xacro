@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sd_vehicle">
+
+    <!-- VEHICLE DIMENSIONS -->
+    <xacro:property name="vehicle_length" value="2.0" />
+    <xacro:property name="vehicle_width" value="1.0" />
+    <xacro:property name="vehicle_height" value="1.0" />
+    <xacro:property name="ground_clearance" value="0.025" />
+
+    <!-- WHEEL SETUP -->
+    <xacro:property name="wheel_diameter" value="0.13" />
+    <xacro:property name="wheel_width" value="0.05" />
+
+    <xacro:property name="sd_wheel_0_origin_x" value="${0.3 * vehicle_length}" />
+    <xacro:property name="sd_wheel_0_origin_y" value="0.0" />
+    <xacro:property name="sd_wheel_0_origin_z" value="${-(ground_clearance + vehicle_height / 2 - wheel_diameter / 2)}" />
+
+    <xacro:property name="fixed_wheel_0_origin_x" value="${-0.4 * vehicle_length}" />
+    <xacro:property name="fixed_wheel_0_origin_y" value="${0.3 * vehicle_width}" />
+    <xacro:property name="fixed_wheel_0_origin_z" value="${-(ground_clearance + vehicle_height / 2 - wheel_diameter / 2)}" />
+
+    <xacro:property name="fixed_wheel_1_origin_x" value="${-0.4 * vehicle_length}" />
+    <xacro:property name="fixed_wheel_1_origin_y" value="${-0.3 * vehicle_width}" />
+    <xacro:property name="fixed_wheel_1_origin_z" value="${-(ground_clearance + vehicle_height / 2 - wheel_diameter / 2)}" />
+
+    <!-- GAZEBO INCLUDE -->
+    <xacro:include filename="$(find sd_description)/urdf/main.gazebo.xacro" />
+
+    <!-- COMMON INCLUDES -->
+    <xacro:include filename="$(find common_description)/urdf/colors.xacro" />
+    <xacro:include filename="$(find common_description)/urdf/constants.xacro" />
+    <xacro:include filename="$(find common_description)/urdf/steer_driven_wheel.urdf.xacro" />
+    <xacro:include filename="$(find common_description)/urdf/driven_wheel.urdf.xacro" />
+    <!--xacro:include filename="$(find common_description)/urdf/sensors/sick_nanoscan3.urdf.xacro" /-->
+    
+    <!-- SD VEHICLE INCLUDES -->
+    <xacro:include filename="$(find sd_description)/urdf/base.urdf.xacro" />
+
+    <!-- BASE -->
+    <xacro:base_setup />
+
+    <!-- DRIVEN WHEEL -->
+    <xacro:sd_wheel name="sd_wheel" parent="base_link">
+        <origin xyz="${sd_wheel_0_origin_x} ${sd_wheel_0_origin_y} ${sd_wheel_0_origin_z}" rpy="0.0 0.0 0.0" />
+    </xacro:sd_wheel>
+
+    <!-- FREE WHEELS -->
+    <xacro:driven_wheel name="left_wheel" parent="base_link">
+        <origin xyz="${fixed_wheel_0_origin_x} ${fixed_wheel_0_origin_y} ${fixed_wheel_0_origin_z}" rpy="${0.5 * M_PI} 0.0 0.0"/>
+    </xacro:driven_wheel>
+
+    <xacro:driven_wheel name="right_wheel" parent="base_link">
+        <origin xyz="${fixed_wheel_1_origin_x} ${fixed_wheel_1_origin_y} ${fixed_wheel_1_origin_z}" rpy="${0.5 * M_PI} 0.0 0.0"/>
+    </xacro:driven_wheel>
+
+
+</robot>
+

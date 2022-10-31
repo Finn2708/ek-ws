@@ -1,0 +1,8 @@
+prefix=/home/finn/workspaces/ek-ws/devel
+
+Name: common_description
+Description: Description of common_description
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -1,0 +1,8 @@
+prefix=/home/finn/workspaces/ek-ws/install
+
+Name: quad_bringup
+Description: Description of quad_bringup
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

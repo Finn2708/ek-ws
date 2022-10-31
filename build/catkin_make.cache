@@ -1,0 +1,2 @@
+common_description:diff_bringup:diff_description:ek_simulation:quad_bringup:quad_description:sd_bringup:sd_description
+-DCATKIN_DEVEL_PREFIX=/home/finn/workspaces/ek-ws/devel -DCMAKE_INSTALL_PREFIX=/home/finn/workspaces/ek-ws/install -G Unix Makefiles
