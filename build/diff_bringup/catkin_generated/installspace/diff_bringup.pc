@@ -1,8 +1,0 @@
-prefix=/home/finn/workspaces/ek-ws/install
-
-Name: diff_bringup
-Description: Description of diff_bringup
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
